@@ -3,7 +3,7 @@
         <ion-label>Welcome {{ currentUser }} !!! </ion-label>
     </ion-list-header>
     <ion-fab horizontal="end" vertical="bottom" slot="fixed">
-        <ion-fab-button id="trigger">
+        <ion-fab-button id="triggerbutton_one">
             <ion-icon size="large" name="add"></ion-icon>
         </ion-fab-button>
     </ion-fab>
@@ -12,7 +12,7 @@
         <ion-card class="ion-padding ion-margin-top">
             <ion-item>
                 <ion-label class="labelText">
-                    {{item.customerName}}
+                    {{item.customerName}} {{item.productCustomerId}}
                 </ion-label>
                 <ion-button fill="outline" slot="end" id="trigger-button{{i}}">
                     <ion-icon name="create"></ion-icon>
@@ -54,4 +54,114 @@
             </ion-item>
         </ion-card>
     </div>
+    <ion-modal trigger="triggerbutton_one">
+        <ng-template>
+            <div style="background-color: #001D6E;" class="app-header">
+                <h1 style="color: #fff; font-weight:800;">Add customer</h1>
+            </div>
+            <ion-grid class="scrollbar" id="style-1">
+                <form (ngSubmit)='save(customerForm.value)' [formGroup]="customerForm">
+                    <ion-row>
+                        <ion-col>
+                            <ion-item lines="none">
+                                <ion-label position="stacked">Customer Name</ion-label>
+                                <ion-input type="text" formControlName="customerName"
+                                    placeholder="Enter the Customer Name"></ion-input>
+                            </ion-item>
+                            <span class="text-danger" *ngIf="!customerForm.controls['customerName'].valid && 
+                                customerForm.controls['customerName']?.touched">Customer Name is required *</span>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col>
+                            <ion-item lines="none">
+                                <ion-label position="stacked">Guarantor Name</ion-label>
+                                <ion-input type="text" formControlName="guarantorName"
+                                    placeholder=" Enter the Guarantor Name"></ion-input>
+                            </ion-item>
+                            <span class="text-danger" *ngIf="!customerForm.controls['guarantorName'].valid && 
+            customerForm.controls['guarantorName']?.touched"> Father/Husband name is required *</span>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col>
+                            <ion-item lines="none">
+                                <ion-label position="stacked">Referred By</ion-label>
+                                <ion-input type="text" formControlName="referredBy"
+                                    placeholder=" Enter the Reference here"></ion-input>
+                            </ion-item>
+                            <span class="text-danger" *ngIf="!customerForm.controls['referredBy'].valid && 
+              customerForm.controls['referredBy']?.touched"> Referred is required *</span>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col>
+                            <ion-item lines="none">
+                                <ion-label position="stacked">Address</ion-label>
+                                <ion-textarea type="text" formControlName="address" placeholder="Enter your Address">
+                                </ion-textarea>
+                            </ion-item>
+                            <span class="text-danger" *ngIf="!customerForm.controls['address'].valid && 
+            customerForm.controls['address']?.touched"> Address is required *</span>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col>
+                            <ion-item lines="none">
+                                <ion-label position="stacked">Mobile No</ion-label>
+                                <ion-input type="tel" formControlName="mobileNumber" placeholder="+91 90........"
+                                    minlength="10" maxlength="10" (keydown)="validateNumber($event)"
+                                    (ionChange)="CheckMobileNumber()">
+                                </ion-input>
+                            </ion-item>
+                            <span class="alert-danger" *ngIf="isShowError == true">
+                                <b>Already Exist</b> Enter valid Mobile Number
+                            </span>
+                            <span class="text-danger" *ngIf="!customerForm.controls['mobileNumber'].valid && 
+            customerForm.controls['mobileNumber']?.touched"> Mobile Number is required *</span>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col>
+                            <ion-item lines="none">
+                                <ion-label position="stacked">Adhaar Number</ion-label>
+                                <ion-input type="tel" (ionChange)="CheckAdharNumber()" formControlName="aadharNumber"
+                                    placeholder="98..........." maxlength="12">
+                                </ion-input>
+                            </ion-item>
+                            <span class="alert-danger" *ngIf="isShowErrors == true">
+                                <b>Already Exist</b> Enter Valid Adhaar Number
+                            </span>
+                            <span class="text-danger" *ngIf="!customerForm.controls['aadharNumber'].valid && 
+            customerForm.controls['aadharNumber']?.touched"> Aadhar Number is required *</span>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col>
+                            <ion-item lines=none>
+                                <ion-label position="stacked">File Upload</ion-label>
+                                <ion-input type="file" formControlName="fileUpload" accept="application/pdf"
+                                    (change)="uploadcandidateFile($event)" placeholder=""></ion-input>
+                            </ion-item>
+                            <span class="text-danger" *ngIf="!customerForm.controls['fileUpload'].valid && 
+            customerForm.controls['fileUpload']?.touched"> File is required *</span>
+                        </ion-col>
+
+                    </ion-row>
+                    <ion-row>
+                        <ion-col>
+                            <ion-item lines="none">
+                                <ion-button class="saveButton" (click)="onClose()" color="danger">
+                                    Cancel</ion-button>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col>
+                            <ion-button class="saveButton" color="tertiary" type="submit" [disabled]="!thisFormValid()">
+                                Save</ion-button>
+                        </ion-col>
+                    </ion-row>
+                </form>
+            </ion-grid>
+        </ng-template>
+    </ion-modal>
 </ion-content>

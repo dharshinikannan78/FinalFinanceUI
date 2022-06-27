@@ -1,16 +1,18 @@
 ion-card {
     background-color: #fff;
     border-radius: 25px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; 
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
-.labelText{
-    padding-left:0.5rem; 
+.labelText {
+    padding-left: 0.5rem;
     font-size: 1.2rem;
 }
-ion-input, ion-textarea , ion-select {
+ion-input,
+ion-textarea,
+ion-select {
     border-radius: 10px;
     margin-top: 1rem;
-    border:0.5px solid #c7d1ef;
+    border: 0.5px solid #c7d1ef;
     --padding-start: 15px !important;
     background-color: #ffffff;
 }
@@ -22,5 +24,10 @@ ion-item {
 ion-label {
     font-weight: 600;
     margin: 0 0 0 0;
-    color: #001D6E !important;
+    color: #001d6e !important;
+}
+.saveButton {
+    width: 8.5rem;
+    height: 3rem;
+    font-weight: 700;
 }

@@ -17,15 +17,15 @@
                 <ion-item>
                     <ion-label class="labelText">
                         {{item.slotNo}}
-                        {{item.productCustomerId}}
+                        <!-- {{item.productCustomerId}} -->
                     </ion-label>
                 </ion-item>
                 <ion-item>
-                    <ion-button fill="outline" (click)="getHistory(item.productCustomerId)">
+                    <ion-button fill="outline" class="saveButton" color="tertiary"
+                        (click)="getHistory(item.productCustomerId)">
                         Select Cus
-                        <ion-icon name="person-add" slot="start"></ion-icon>
                     </ion-button>
-                    <ion-button fill="outline" id="list{{item.productCustomerId}}">
+                    <ion-button fill="outline" class="saveButton" slot="end" id="list{{item.productCustomerId}}">
                         Pay
                         <ion-icon name="person-add" slot="start"></ion-icon>
                     </ion-button>

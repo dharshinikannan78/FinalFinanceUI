@@ -13,6 +13,7 @@ import { UserService } from 'src/app/services/user.service';
 export class Tab4Page {
 
   _data: any;
+  data: any;
   ProductCustomerId: any = localStorage.getItem('productCustomerId');
   constructor(
     private apiService: ApiService,
@@ -21,6 +22,7 @@ export class Tab4Page {
     private userService: UserService,
   ) {
     this.getPaymentHistory();
+
   }
 
   getPaymentHistory() {

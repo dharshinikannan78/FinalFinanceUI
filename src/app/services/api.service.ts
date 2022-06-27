@@ -110,5 +110,37 @@ export class ApiService {
     const url = this.getPaymentApiUrl('PaymentDetails');
     return this.http.post(url, params);
   }
+  existMobileNumber(exist: any) {
+    const url = this.getCustomerApiUrl('existMobileNumber?obj=')
+    return this.http.get(url + exist);
+  }
 
+  existAdharNumber(exist: any) {
+    const url = this.getCustomerApiUrl('existAadharNumber?obj=')
+    return this.http.get(url + exist);
+  }
+
+  insertCustomer = (params: any): Observable<any> => {
+    const url = this.getCustomerApiUrl('AddNewCustomer');
+    return this.http.post(url, params);
+  }
+
+  fileUpload = (params: any): Observable<any> => {
+    const url = this.FileApiUrl('Upload');
+    return this.http.post(url, params);
+  }
+
+  getPayment = (id: any): Observable<any> => {
+    const url = this.getPaymentApiUrl('getPaymentDetails?id=');
+    return this.http.get(url + id);
+  }
+  
+  getProductCustomer = (): Observable<any> => {
+    const url = this.getProductCustomerApiUrl('AllproductCustomer');
+    return this.http.get(url);
+  }
+  filterItem = (params: any): Observable<any> => {
+    const url = this.getPaymentApiUrl('FilteredItems');
+    return this.http.post(url, params);
+  }
 }
