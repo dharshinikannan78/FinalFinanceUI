@@ -14,7 +14,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class Tab2Page implements OnInit {
 
-  _data;
+  _data: any;
   productCustomerList: any;
   paymentForm: FormGroup;
   productId: any = localStorage.getItem('productId');
@@ -33,7 +33,8 @@ export class Tab2Page implements OnInit {
     private apiService: ApiService,
     private toast: NotificationService,
     public alertController: AlertController,
-    private modal: ModalController,
+    private modal: ModalController
+
 
   ) {
     // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -45,18 +46,28 @@ export class Tab2Page implements OnInit {
   ngOnInit(): void {
   }
 
+
+  ionViewWillEnter() {
+    this.getCustomerDetails();
+    this.generatePaymentForm();
+    console.log('came');
+  }
+  ionViewWillLeave() {
+    console.log('left')
+    this._data = null;
+  }
+
+
   addCustomerToProduct() {
     this.userService.getProductId();
     this.router.navigate(['tabs/tab3']);
   }
 
   getCustomerDetails() {
-    let pid = this.userService.getProductId();
-    console.log(pid, 'pid')
-    this.apiService.CustomerForProductDetails(this.productId).subscribe(data => {
+    let pId = localStorage.getItem('productId');
+    this.apiService.CustomerForProductDetails(pId).subscribe(data => {
       this._data = data;
       console.log(data, 'Geetha');
-
     });
   }
 
@@ -67,7 +78,7 @@ export class Tab2Page implements OnInit {
   }
 
   customerList() {
-    let pId = this.productId
+    let pId = localStorage.getItem('productId');
     // let pId = this.userService.getProductId();
     this.apiService.ProductCustomer(pId).subscribe((data: any) => {
       console.groupCollapsed(data, 'hello')

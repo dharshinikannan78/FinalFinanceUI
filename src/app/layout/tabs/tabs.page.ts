@@ -24,5 +24,6 @@ export class TabsPage {
     this.apiService.logout();
     this.router.navigate(['./login']);
     this.popOver.dismiss();
+    window.location.reload();
   }
 }

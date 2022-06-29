@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import * as moment from 'moment';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { UserService } from 'src/app/services/user.service';
@@ -24,14 +25,23 @@ export class Tab4Page {
     this.getPaymentHistory();
 
   }
+  ionViewWillEnter() {
+    this.getPaymentHistory();
+  }
+  ionViewWillLeave() {
+    delete this._data
+  }
 
   getPaymentHistory() {
-    let pid = this.ProductCustomerId;
+    let pid = localStorage.getItem('productCustomerId');
     this.apiService.CustomerPayHistory(pid).subscribe(data => {
       this._data = data;
       console.log(data, 'Geetha');
 
     });
   }
-
+  
+  convert(data: any): string {
+    return moment(data).format('D-MMM-YYYY');
+  }
 }

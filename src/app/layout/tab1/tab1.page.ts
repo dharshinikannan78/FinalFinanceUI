@@ -13,15 +13,19 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page implements OnInit {
+  // updateForm: any;
+  // toast: any;
 
   constructor(private apiService: ApiService,
     private modal: ModalController,
     private router: Router,
     private userService: UserService,
+    private toast: NotificationService,
     public notificationService: NotificationService,
     private fb: FormBuilder) {
     this.generateProductForm();
     this.getDetails();
+    this.updateProductForm();
   }
 
   currentUser: string = localStorage.getItem('userName');
@@ -32,9 +36,17 @@ export class Tab1Page implements OnInit {
   ischecproductName: boolean = true;
   productDetails: any;
   segment: any;
+  updateForm: FormGroup;
 
   ngOnInit(): void {
     this.segment = 'Chit';
+  }
+
+  ionViewWillEnter() {
+    this.generateProductForm();
+    this.updateProductForm();
+    this.getDetails();
+    console.log('came');
   }
 
   generateProductForm = () => {
@@ -51,16 +63,33 @@ export class Tab1Page implements OnInit {
     });
   }
 
+  updateProductForm = () => {
+    this.updateForm = this.fb.group({
+      productId: [''],
+      productName: ['', Validators.required],
+      productType: ['', Validators.required],
+      productTenure: ['', Validators.required],
+      noOfCustomers: ['', Validators.required],
+      productDescription: ['', Validators.required],
+      price: ['', Validators.required],
 
+    });
+  }
+
+  // ionViewWillEnter() {
+  //     this.customerHistory();
+  //     console.log('came');
+  //   }
   addProductDetails() {
     this.apiService.insertProduct(this.productDetailsForm.value).subscribe((data: any) => {
       this.productDetailsForm.reset();
       this.modal.dismiss().then(() => {
-        window.location.reload()
+        window.location.reload();
       });
       this.getDetails();
     });
     this.notificationService.success('Product Details Saved Successfully');
+
   }
 
   getDetails() {
@@ -85,7 +114,7 @@ export class Tab1Page implements OnInit {
           this.ischecproductName = true;
           this.isShowError = true
         }
-      })
+      });
     }
   }
 
@@ -115,13 +144,26 @@ export class Tab1Page implements OnInit {
     this.apiService.CustomerForProductDetails(data).subscribe(data => {
       console.log(data, 'hello');
       this.router.navigate(['tabs/tab2'])
-        .then(() => {
-          window.location.reload()
-        });
+      // .then(() => {
+      //   window.location.reload()
+      // });
     });
   }
 
   getFliterCustomer(data: any) {
 
+
   }
+  updateProduct(updateProductDetailsForm: any) {
+    this.apiService.updateProduct(this.updateForm.value).subscribe(data => {
+      this.toast.success('Updated sucessfully');
+      this.modal.dismiss();
+    },
+      (error: Response) => {
+        if (error.status === 400) {
+          this.notificationService.error("Product Name Exists Already!")
+        }
+      });
+  }
+
 }

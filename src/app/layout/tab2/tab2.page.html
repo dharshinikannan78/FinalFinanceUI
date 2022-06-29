@@ -1,103 +1,104 @@
 <ion-content>
+    <h2>Subscriber List</h2>
+    <ion-item>
+        <ion-chip color="tertiary" slot="end" (click)="addCustomerToProduct()">
+            <ion-icon name="people" color="primary"></ion-icon>
+            <ion-label color="teritary">Customer</ion-label>
+        </ion-chip>
+    </ion-item>
     <ion-grid>
-        <ion-item>
-            <ion-button fill="outline" slot="end" (click)="addCustomerToProduct()">
-                Get All Cus
-                <ion-icon name="person-add" slot="start"></ion-icon>
-            </ion-button>
-        </ion-item>
-        <div *ngFor="let item of _data; let i = index;">
-            <ion-card class="ion-padding ion-margin-top">
-                <ion-item>
-                    <ion-icon slot="start" name="person"></ion-icon>
-                    <ion-label class="labelText">
-                        {{item.customerName}}
-                    </ion-label>
-                </ion-item>
-                <ion-item>
-                    <ion-label class="labelText">
-                        {{item.slotNo}}
-                        <!-- {{item.productCustomerId}} -->
-                    </ion-label>
-                </ion-item>
-                <ion-item>
-                    <ion-button fill="outline" class="saveButton" color="tertiary"
-                        (click)="getHistory(item.productCustomerId)">
-                        Select Cus
-                    </ion-button>
-                    <ion-button fill="outline" class="saveButton" slot="end" id="list{{item.productCustomerId}}">
-                        Pay
-                        <ion-icon name="person-add" slot="start"></ion-icon>
-                    </ion-button>
-                </ion-item>
-            </ion-card>
-        </div>
-        <ion-modal *ngFor="let list of productCustomerList; let i = index" trigger="list{{list.productCustomerId}}">
-            <ng-template>
-                <div style="background-color: #001D6E;" class="app-header">
-                    <h1>Payment Details</h1>
-                </div>
-                <ion-grid class="ion-no-margin scrollbar" id="style-1">
-                    <form (ngSubmit)="payFormValue()" [formGroup]="paymentForm">
-                        <ion-row>
-                            <ion-col>
-                                <ion-label>Amount</ion-label>
-                                <ion-input type="text" formControlName="paidAmount"></ion-input>
-                                <span class="text-danger" *ngIf="!paymentForm.controls['paidAmount'].valid && 
-                            paymentForm.controls['paidAmount']?.touched">Payment Amount is required *</span>
-                            </ion-col>
+        <ion-row>
+            <ion-col *ngFor="let item of _data; let i = index;">
+                <ion-card class="ion-padding ion-margin-top">
+                    <ion-item>
+                        <ion-icon slot="start" name="person"></ion-icon>
+                        <ion-label class="labelText">
+                            {{item.customerName}}
+                        </ion-label>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label class="labelText">
+                            {{item.slotNo}} Slot
+                        </ion-label>
+                    </ion-item>
+                    <ion-item>
+                        <ion-chip color="tertiary" (click)="getHistory(item.productCustomerId)">
+                            <ion-icon name="person" color="primary"></ion-icon>
+                            <ion-label color="teritary">Details</ion-label>
+                        </ion-chip>
+                        <ion-chip color="tertiary" slot="end" id="list{{item.productCustomerId}}">
+                            <ion-label color="teritary">Pay</ion-label>
+                        </ion-chip>
+                    </ion-item>
+                </ion-card>
 
-                        </ion-row>
-                        <ion-row>
-                            <ion-col>
-                                <ion-label>Payment Date</ion-label>
-                                <ion-input type="text" disabled formControlName="paymentDate"></ion-input>
-                            </ion-col>
-                        </ion-row>
-                        <ion-row>
-                            <ion-col>
+                <ion-modal class="" trigger="list{{item.productCustomerId}}">
+                    <ng-template>
+                        <div style="background-color: #001D6E;" class="app-header">
+                            <h1>Payment Details</h1>
+                        </div>
+                        <ion-content class="ion-padding">
+                            <ion-grid id="style-1">
+                                <form (ngSubmit)="payFormValue()" [formGroup]="paymentForm">
+                                    <ion-row>
+                                        <ion-col>
+                                            <ion-label>Amount</ion-label>
+                                            <ion-input type="text" formControlName="paidAmount"></ion-input>
+                                            <span class="text-danger" *ngIf="!paymentForm.controls['paidAmount'].valid && 
+                                        paymentForm.controls['paidAmount']?.touched">Payment Amount is required
+                                                *</span>
+                                        </ion-col>
+
+                                    </ion-row>
+                                    <ion-row>
+                                        <ion-col>
+                                            <ion-label>Payment Date</ion-label>
+                                            <ion-input type="text" disabled formControlName="paymentDate"></ion-input>
+                                        </ion-col>
+                                    </ion-row>
+                                    <ion-row>
+                                        <ion-col>
+                                            <ion-col>
+                                                <ion-label>Payment Type</ion-label>
+                                                <ion-select placeholder="Payment Type" formControlName="paymentType">
+                                                    <ion-select-option value="Cash">Cash</ion-select-option>
+                                                    <ion-select-option value="Cash">Online</ion-select-option>
+                                                </ion-select>
+                                                <span class="text-danger" *ngIf="!paymentForm.controls['paymentType'].valid && 
+                                            paymentForm.controls['paymentType']?.touched">Product Type is required
+                                                    *</span>
+                                            </ion-col>
+                                        </ion-col>
+                                        <ion-col style="visibility: hidden;">
+                                            <ion-input type="text" disabled formControlName="productCustomerId"
+                                                [(ngModel)]="item.productCustomerId"></ion-input>
+                                        </ion-col>
+                                    </ion-row>
+                                    <ion-row>
+                                        <ion-col>
+                                            <ion-label>Collected By</ion-label>
+                                            <ion-input type="text" disabled formControlName="collectedBy"></ion-input>
+                                        </ion-col>
+                                    </ion-row>
+                                    <ion-row>
+                                    </ion-row>
+                                </form>
+                            </ion-grid>
+                            <ion-row class="ion-justify-content-center ion-margin-top">
                                 <ion-col>
-                                    <ion-label>Payment Type</ion-label>
-                                    <ion-select placeholder="Payment Type" formControlName="paymentType">
-                                        <ion-select-option value="Cash">Cash</ion-select-option>
-                                        <ion-select-option value="Cash">Online</ion-select-option>
-                                    </ion-select>
-                                    <span class="text-danger" *ngIf="!paymentForm.controls['paymentType'].valid && 
-                                paymentForm.controls['paymentType']?.touched">Product Type is required *</span>
-                                </ion-col>
-                            </ion-col>
-                            <ion-col style="visibility: hidden;">
-                                <ion-input type="text" disabled formControlName="productCustomerId"
-                                    [(ngModel)]="list.productCustomerId"></ion-input>
-                            </ion-col>
-                        </ion-row>
-                        <ion-row>
-                            <ion-col>
-                                <ion-label>Collected By</ion-label>
-                                <ion-input type="text" disabled formControlName="collectedBy"></ion-input>
-                            </ion-col>
-                        </ion-row>
-                        <ion-row>
-                        </ion-row>
-                        <ion-row class="ion-justify-content-center">
-                            <ion-col>
-                                <ion-item lines="none">
-                                    <ion-button class="saveButton" (click)="onClose()" color="danger">
+                                    <ion-button expand="block" (click)="onClose()" color="danger">
                                         Cancel</ion-button>
-                                </ion-item>
-                            </ion-col>
-                            <ion-col>
-                                <ion-item lines="none">
-                                    <ion-button type="Submit" class="saveButton" slot="end"
-                                        [disabled]="!thisFormValid()"> ₹
-                                        &nbsp;&nbsp;&nbsp;Pay
+                                </ion-col>
+                                <ion-col>
+                                    <ion-button (click)="payFormValue()" expand="block" [disabled]="!thisFormValid()"> ₹
+                                        &nbsp;Pay
                                     </ion-button>
-                                </ion-item>
-                            </ion-col>
-                        </ion-row>
-                    </form>
-                </ion-grid>
-            </ng-template>
-        </ion-modal>
+                                </ion-col>
+                            </ion-row>
+                        </ion-content>
+                    </ng-template>
+                </ion-modal>
+            </ion-col>
+        </ion-row>
     </ion-grid>
 </ion-content>

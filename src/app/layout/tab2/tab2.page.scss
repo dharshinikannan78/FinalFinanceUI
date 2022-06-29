@@ -22,12 +22,43 @@ ion-item {
     margin: 0 0 0 0;
 }
 ion-label {
-    font-weight: 600;
+    font-weight: 800 !important;
     margin: 0 0 0 0;
     color: #001d6e !important;
 }
 .saveButton {
-    width: 8.5rem;
+    width: 6.5rem;
     height: 3rem;
     font-weight: 700;
+}
+ion-card {
+    border-radius: 18px;
+    box-shadow: #64646f33 0 7px 29px;
+    // width: 50vh;
+}
+// ion-content {
+//     --background: #f9f9fc;
+// }
+p {
+    color: #001d6e;
+}
+h1 {
+    color: #ffffff;
+    font-weight: 800;
+}
+h2 {
+    color: #001d6e;
+    font-weight: 800;
+    text-align: center;
+}
+@media (min-width: 500px) {
+    ion-modal {
+        --height: 600px;
+    }
+}
+.text-danger {
+    font-weight: 800 bold !important;
+    color: #f03a3a;
+    margin: 1.5rem;
+    margin-bottom: 10rem !important;
 }

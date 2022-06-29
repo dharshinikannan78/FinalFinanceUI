@@ -143,4 +143,12 @@ export class ApiService {
     const url = this.getPaymentApiUrl('FilteredItems');
     return this.http.post(url, params);
   }
+  updateProduct = (params: any): Observable<any> => {
+    const url = this.getProductApiUrl('UpdateProduct');
+    return this.http.put(url, params);
+  }
+  updateCustomer = (params: any): Observable<any> => {
+    const url = this.getCustomerApiUrl('UpdateCustomer');
+    return this.http.put(url, params);
+  }
 }

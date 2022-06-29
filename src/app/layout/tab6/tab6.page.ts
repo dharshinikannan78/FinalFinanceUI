@@ -41,10 +41,14 @@ export class Tab6Page implements OnInit {
   ngOnInit(): void {
   }
 
+  ionViewWillEnter() {
+    this.getProductDetails();
+    console.log('came');
+  }
+
   getProductDetails() {
-    let pid = this.userService.getProductId();
-    console.log(pid, 'pid')
-    this.apiService.productForCustomerDetails(this.customerId).subscribe(data => {
+    let cid = localStorage.getItem('customerId');
+    this.apiService.productForCustomerDetails(cid).subscribe(data => {
       this._data = data;
       console.log(data, 'Geetha');
 

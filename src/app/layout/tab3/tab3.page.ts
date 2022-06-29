@@ -6,7 +6,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { AlertController, ModalController } from '@ionic/angular';
 import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, MaxValidator, Validators } from '@angular/forms';
 import * as moment from 'moment';
 
 
@@ -16,6 +16,7 @@ import * as moment from 'moment';
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page implements OnInit {
+
 
   currentUser: string = localStorage.getItem('userName');
   productId: any = localStorage.getItem('productId');
@@ -27,6 +28,7 @@ export class Tab3Page implements OnInit {
   ischeckAdharNumber: boolean = true;
   isShowErrors: any;
   attachmentId: any;
+  updateForm: FormGroup;
 
 
   constructor(
@@ -43,8 +45,20 @@ export class Tab3Page implements OnInit {
   ) {
     this.getCustomerDetail();
     this.generateCustomerForm();
+    this.generateDetails();
   }
   ngOnInit(): void {
+  }
+
+  ionViewWillEnter() {
+    this.generateCustomerForm();
+    this.generateDetails();
+    this.getCustomerDetail();
+    console.log('came');
+  }
+
+  ionViewWillLeave() {
+    delete this._data
   }
 
   getCustomerDetail = () => {
@@ -73,7 +87,7 @@ export class Tab3Page implements OnInit {
       'createdBy': this.currentUser,
       'customerId': data,
       // 'productId': this.userService.getProductId(),
-      'productId': this.productId
+      'productId': localStorage.getItem('productId')
     }
 
     const alert = await this.alertController.create({
@@ -92,16 +106,15 @@ export class Tab3Page implements OnInit {
           handler: () => {
             this.apiService.insertProductCustomer(payload).subscribe((data: any) => {
               console.log(data)
-            });
-            this.toast.success('Added Successfully');
-            // window.location.reload();
-            // this.router.navigate(['/tabs/tab2'])
-            // .then(() => {
-            //   window.location.reload()
-            // });
-            this.toast.success('Add sucessfully');
-
-          }
+              this.toast.success('Added Successfully');
+              this.router.navigate(['/tabs/tab1']);
+            },
+              (error: Response) => {
+                if (error.status === 400) {
+                  this.notificationService.error("Slot Maximum Limit Reached ")
+                };
+              });
+          },
         }
       ]
     });
@@ -112,7 +125,7 @@ export class Tab3Page implements OnInit {
     this.userService.customer = data;
     this.apiService.productForCustomerDetails(data).subscribe(data => {
       console.log(data, 'data')
-      this.router.navigate(['/tabs/tab6'])
+      this.router.navigate(['/tabs/tab6']);
 
     });
   }
@@ -130,21 +143,34 @@ export class Tab3Page implements OnInit {
 
     });
   }
+  generateDetails = () => {
+    this.updateForm = this.fb.group({
+      customerId: [''],
+      customerName: ['', Validators.required],
+      guarantorName: ['', Validators.required],
+      address: ['', Validators.required],
+      mobileNumber: ['', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+      aadharNumber: ['', Validators.required],
+      referredBy: ['', Validators.required],
+      attachmentId: [''],
+      attachmentName: ['']
+    });
+  }
 
   get f() { return this.customerForm.controls; }
-
 
   save(customerForm: any) {
     customerForm.attachmentId = this.attachmentId;
     this.apiService.insertCustomer(this.customerForm.value).subscribe(data => {
+      this.customerForm.reset();
       this.notificationService.success('Customer details saved successfully')
-      this.modal.dismiss()
-        .then(() => {
-          window.location.reload()
-        });
+      this.modal.dismiss().then(() => {
+        window.location.reload();
+      });
       this.getCustomerDetail();
     });
   }
+
   uploadcandidateFile = (fileChangeEvent: any) => {
     const photo = fileChangeEvent.target.files[0];
     const formData = new FormData();
@@ -204,6 +230,13 @@ export class Tab3Page implements OnInit {
     } else {
       return false
     }
+  }
+  updateCustomer(update: any) {
+    this.apiService.updateCustomer(this.updateForm.value).subscribe(data => {
+      this.toast.success('Added Successfully');
+      this.modal.dismiss();
+      this.getCustomerDetail();
+    });
   }
 
 }

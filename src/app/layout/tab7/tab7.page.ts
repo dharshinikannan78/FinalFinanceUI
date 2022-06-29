@@ -12,13 +12,10 @@ import { ApiService } from '../../services/api.service';
 })
 export class Tab7Page implements OnInit {
 
-  
+
   constructor(public notificationService: NotificationService,
     private router: Router,
     private apiService: ApiService) {
-    this.getDetails();
-    this.customerList()
-    this.getCustomerDetail();
     this.paymentDetails();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
@@ -39,26 +36,9 @@ export class Tab7Page implements OnInit {
   allPaymentDetails: any;
 
   convert(data: any): string {
-    return moment(data).format('D-MMM-YYYY');
+    return moment(data).format('MMMM Do YYYY');
   }
 
-  customerList() {
-    this.apiService.getProductCustomer().subscribe((data: any) => {
-      this.customerDetailsList = data
-    });
-  }
-
-  getDetails() {
-    this.apiService.getProductDetails().subscribe((data: any) => {
-      this.productDetails = data;
-    });
-  }
-
-  getCustomerDetail = () => {
-    this.apiService.getCustomerDetails().subscribe(data => {
-      this.customerData = data;
-    });
-  }
 
   paymentDetails() {
     let payload = {
@@ -67,6 +47,7 @@ export class Tab7Page implements OnInit {
     }
     let test = this.apiService.filterItem(payload)
     test.subscribe(data => {
+      console.log(data, 'pay')
       this.allPaymentDetails = data;
     });
   }
