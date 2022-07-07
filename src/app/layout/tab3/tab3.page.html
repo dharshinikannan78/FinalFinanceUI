@@ -7,14 +7,17 @@
             <ion-icon size="large" name="add"></ion-icon>
         </ion-fab-button>
     </ion-fab>
-    <ion-searchbar (ionChange)="yourSearchFunction($event)"></ion-searchbar>
+    <ion-searchbar class="ion-margin-top" (ionChange)="yourSearchFunction($event)"></ion-searchbar>
+
+    <h5 *ngIf="filterArray == false" class="isDataNot ion-margin-top"> No Data Found</h5>
     <ion-grid>
         <ion-row>
             <ion-col *ngFor="let item of filterArray ; let i = index;" size="12" size-sm="6" size-md="6" size-lg="4">
                 <ion-card class="ion-padding ion-margin-top">
                     <ion-item>
                         <ion-label class="labelText">
-                            {{item.customerName}} {{item.productCustomerId}}
+                            {{item.customerName}}hello
+
                         </ion-label>
                         <!-- <ion-button fill="outline" slot="end" id="trigger-button{{i}}">
                                 <ion-icon name="create"></ion-icon>
@@ -134,20 +137,36 @@
                                                 </ion-col>
 
                                             </ion-row>
+                                            <!-- <ion-row>
+                                                <ion-col>
+                                                    <ion-item lines="none">
+                                                        <ion-label position="stacked">Status</ion-label>
+                                                        <ion-select placeholder="Status"
+                                                            (ionChange)="statusForm($event)" formControlName="status"
+                                                            [(ngModel)]="item.status">
+                                                            <ion-select-option value="open">Inprogress
+                                                            </ion-select-option>
+                                                            <ion-select-option value="Complete">Complete
+                                                            </ion-select-option>
+                                                        </ion-select>
+                                                    </ion-item>
+                                                </ion-col>
+                                            </ion-row> -->
+                                            <ion-row class="paddingOnSide">
+                                                <ion-col>
+                                                    <ion-button expand="block" (click)="onClose()" color="danger">
+                                                        Cancel</ion-button>
+                                                </ion-col>
+                                                <ion-col>
+                                                    <ion-button color="tertiary" expand="block" type="submit"
+                                                        (click)="updateCustomer(updateForm.value)">Save
+                                                    </ion-button>
+                                                </ion-col>
+                                            </ion-row>
                                         </form>
                                     </ion-grid>
                                 </ion-content>
-                                <ion-row class="paddingOnSide">
-                                    <ion-col>
-                                        <ion-button expand="block" (click)="onClose()" color="danger">
-                                            Cancel</ion-button>
-                                    </ion-col>
-                                    <ion-col>
-                                        <ion-button color="tertiary" expand="block" type="submit"
-                                            (click)="updateCustomer(updateForm.value)">Save
-                                        </ion-button>
-                                    </ion-col>
-                                </ion-row>
+
                             </ng-template>
                         </ion-modal>
                     </ion-item>
@@ -176,12 +195,19 @@
                             <p> {{ item.attachmentName }}</p>
                         </ion-label>
                     </ion-item>
+
+
+
+
+
+
                     <ion-item>
                         <!-- <ion-button fill="outline" slot="end" (click)="presentAlertConfirm(item.customerId)">add
                                 cust
                                 <ion-icon name="person-sharp"></ion-icon>
                             </ion-button> -->
-                        <ion-chip color="tertiary" slot="end" (click)="presentAlertConfirm(item.customerId)">
+                        <ion-chip color="tertiary" slot="end"
+                            (click)="presentAlertConfirm(item.customerId, item.customerName)">
                             <ion-icon name="person" color="primary"></ion-icon>
                             <ion-label color="teritary">Add To Product</ion-label>
                         </ion-chip>

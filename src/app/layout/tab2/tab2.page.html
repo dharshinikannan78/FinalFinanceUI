@@ -1,38 +1,60 @@
 <ion-content>
-    <h2>Subscriber List</h2>
     <ion-item>
-        <ion-chip color="tertiary" slot="end" (click)="addCustomerToProduct()">
-            <ion-icon name="people" color="primary"></ion-icon>
-            <ion-label color="teritary">Customer</ion-label>
-        </ion-chip>
+        <ion-row class="ion-justify-content-center ion-margin-top ">
+            <ion-col>
+                <h2>Customer</h2>
+            </ion-col>
+            <ion-col style="margin-left: 3.3rem; margin-top: 10px;">
+                <ion-chip color="tertiary" (click)="addCustomerToProduct()">
+                    <ion-icon name="people" color="primary"></ion-icon>
+                    <ion-label color="teritary">Add To Customer</ion-label>
+                </ion-chip>
+            </ion-col>
+        </ion-row>
     </ion-item>
+    <h5 *ngIf="_data == false" class="isDataNot">No Data Found</h5>
+    <ion-item>
+        <ion-row class="ion-margin-top">
+            <div *ngFor="let item of _data | slice:0:1; let i = index;">
+                <ion-chip style="margin-left: 9rem; margin-top: 2px;" color="tertiary">
+                    <ion-label color="teritary">{{item.productName}}</ion-label>
+                </ion-chip>
+            </div>
+        </ion-row>
+    </ion-item>
+
     <ion-grid>
         <ion-row>
-            <ion-col *ngFor="let item of _data; let i = index;">
-                <ion-card class="ion-padding ion-margin-top">
-                    <ion-item>
-                        <ion-icon slot="start" name="person"></ion-icon>
-                        <ion-label class="labelText">
-                            {{item.customerName}}
-                        </ion-label>
-                    </ion-item>
+            <ion-col *ngFor="let item of _data let i = index;">
+                <!-- <ion-label color="teritary" >{{item.productName | slice:0:100}}</ion-label> -->
+                <ion-card class="ion-padding">
                     <ion-item>
                         <ion-label class="labelText">
-                            {{item.slotNo}} Slot
-                        </ion-label>
+                            {{item.slotNo}} &nbsp; &nbsp;{{item.customerName}} 
+                        </ion-label>                       
+                        <!-- <ion-chip color="tertiary">
+                            <ion-label color="teritary">{{item.subcriberList}} Month Paid</ion-label>
+                        </ion-chip> -->
+                        <!-- <ion-chip color="tertiary">
+                            <ion-label color="teritary">{{item.subcriberList}}/{{item.productTenure}}</ion-label>
+                        </ion-chip> -->
                     </ion-item>
+                    <!-- <ion-item>
+                        <p class="labelFont">Remaining <b>{{item.remainingMonthsAre}} Months</b> to Pay.</p>
+
+                    </ion-item> -->
                     <ion-item>
                         <ion-chip color="tertiary" (click)="getHistory(item.productCustomerId)">
                             <ion-icon name="person" color="primary"></ion-icon>
                             <ion-label color="teritary">Details</ion-label>
                         </ion-chip>
-                        <ion-chip color="tertiary" slot="end" id="list{{item.productCustomerId}}">
-                            <ion-label color="teritary">Pay</ion-label>
+                        <ion-chip color="tertiary" slot="end" id="PayListDetails{{item.productCustomerId}}">
+                            <ion-label color="teritary">Collect</ion-label>
                         </ion-chip>
                     </ion-item>
                 </ion-card>
 
-                <ion-modal class="" trigger="list{{item.productCustomerId}}">
+                <ion-modal trigger="PayListDetails{{item.productCustomerId}}">
                     <ng-template>
                         <div style="background-color: #001D6E;" class="app-header">
                             <h1>Payment Details</h1>
@@ -48,14 +70,13 @@
                                         paymentForm.controls['paidAmount']?.touched">Payment Amount is required
                                                 *</span>
                                         </ion-col>
-
-                                    </ion-row>
-                                    <ion-row>
-                                        <ion-col>
-                                            <ion-label>Payment Date</ion-label>
-                                            <ion-input type="text" disabled formControlName="paymentDate"></ion-input>
+                                        <ion-col style="visibility: hidden; display: none;">
+                                            <ion-input type="text" disabled formControlName="productCustomerId"
+                                                [(ngModel)]="item.productCustomerId"></ion-input>
                                         </ion-col>
                                     </ion-row>
+
+
                                     <ion-row>
                                         <ion-col>
                                             <ion-col>
@@ -69,15 +90,12 @@
                                                     *</span>
                                             </ion-col>
                                         </ion-col>
-                                        <ion-col style="visibility: hidden;">
-                                            <ion-input type="text" disabled formControlName="productCustomerId"
-                                                [(ngModel)]="item.productCustomerId"></ion-input>
-                                        </ion-col>
                                     </ion-row>
                                     <ion-row>
                                         <ion-col>
                                             <ion-label>Collected By</ion-label>
-                                            <ion-input type="text" disabled formControlName="collectedBy"></ion-input>
+                                            <ion-input type="text" disabled formControlName="collectedBy">
+                                            </ion-input>
                                         </ion-col>
                                     </ion-row>
                                     <ion-row>

@@ -34,8 +34,8 @@ h2 {
     text-align: center;
 }
 ion-label {
-    font-weight: 500;
-    // margin: 0 0 0 0;
+    font-weight: 800;
+    margin: 0 0 0 0;
     color: #001d6e !important;
 }
 @media (min-width: 500px) {
@@ -49,6 +49,19 @@ ion-label {
 .text-danger {
     font-weight: 800 bold !important;
     color: #f03a3a;
-    margin: 1.5rem;
+    margin: 1.1rem;
     margin-bottom: 10rem !important;
+}
+.isDataNot {
+    text-align: center !important;
+}
+.labelText {
+    // padding-left: 1rem;
+    text-align: center;
+    font-size: 1.2rem;
+}
+.labelFont {
+    padding-left: 1.5rem;
+    margin: 0 0 0 0;
+    
 }

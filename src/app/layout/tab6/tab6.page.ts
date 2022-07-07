@@ -49,8 +49,9 @@ export class Tab6Page implements OnInit {
   getProductDetails() {
     let cid = localStorage.getItem('customerId');
     this.apiService.productForCustomerDetails(cid).subscribe(data => {
+      console.log(data, 'geetha')
       this._data = data;
-      console.log(data, 'Geetha');
+      console.log(this._data, 'Geetha');
 
     });
   }

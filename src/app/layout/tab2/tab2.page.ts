@@ -24,7 +24,6 @@ export class Tab2Page implements OnInit {
 
 
 
-
   constructor(
     private router: Router,
     private fb: FormBuilder,
@@ -66,6 +65,7 @@ export class Tab2Page implements OnInit {
   getCustomerDetails() {
     let pId = localStorage.getItem('productId');
     this.apiService.CustomerForProductDetails(pId).subscribe(data => {
+      console.log(data, 'new')
       this._data = data;
       console.log(data, 'Geetha');
     });
@@ -81,7 +81,8 @@ export class Tab2Page implements OnInit {
     let pId = localStorage.getItem('productId');
     // let pId = this.userService.getProductId();
     this.apiService.ProductCustomer(pId).subscribe((data: any) => {
-      console.groupCollapsed(data, 'hello')
+      console.log(data, 'new Data')
+      console.log(data, 'hello')
       this.productCustomerList = data
     });
   }
@@ -101,7 +102,16 @@ export class Tab2Page implements OnInit {
       console.log(data, 'helo')
       this.notificationService.success('Paid successfully')
       this.router.navigate(['tabs/tab1']);
-    });
+
+
+    },
+      (error: Response) => {
+        if (error.status === 400) {
+          this.notificationService.error("Max Month Reached")
+        }
+      }
+
+    );
     this.modal.dismiss();
     this.paymentForm.reset();
   }

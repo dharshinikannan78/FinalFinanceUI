@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import * as moment from 'moment';
+import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { UserService } from 'src/app/services/user.service';
@@ -15,6 +16,18 @@ import { UserService } from 'src/app/services/user.service';
 export class Tab1Page implements OnInit {
   // updateForm: any;
   // toast: any;
+  currentUser: string = localStorage.getItem('userName');
+  productId: any = localStorage.getItem('productId');
+  productDetailsForm: FormGroup;
+  isShowError: boolean = false;
+  ischecproductName: boolean = true;
+  productDetails: any;
+  segment: any;
+  updateForm: FormGroup;
+  filterArray: any;
+  IsStatus: any;
+  // notEmpty: any;
+  // empty$: Observable<boolean>;
 
   constructor(private apiService: ApiService,
     private modal: ModalController,
@@ -28,15 +41,6 @@ export class Tab1Page implements OnInit {
     this.updateProductForm();
   }
 
-  currentUser: string = localStorage.getItem('userName');
-  productId: any = localStorage.getItem('productId');
-
-  productDetailsForm: FormGroup;
-  isShowError: boolean = false;
-  ischecproductName: boolean = true;
-  productDetails: any;
-  segment: any;
-  updateForm: FormGroup;
 
   ngOnInit(): void {
     this.segment = 'Chit';
@@ -72,6 +76,7 @@ export class Tab1Page implements OnInit {
       noOfCustomers: ['', Validators.required],
       productDescription: ['', Validators.required],
       price: ['', Validators.required],
+      isStatus: ['']
 
     });
   }
@@ -89,18 +94,20 @@ export class Tab1Page implements OnInit {
       this.getDetails();
     });
     this.notificationService.success('Product Details Saved Successfully');
-
   }
 
   getDetails() {
     this.apiService.getProductDetails().subscribe((data: any) => {
+      console.log(data, 'getProductDetails')
       this.productDetails = data;
+      this.filterArray = data;
     });
   }
 
   segmentChanged(ev: any) {
     this.segment = ev.detail.value;
   }
+
   checkProduct() {
     this.isShowError = false
     this.ischecproductName = true;
@@ -116,6 +123,13 @@ export class Tab1Page implements OnInit {
         }
       });
     }
+  }
+  SearchFunction(event) {
+    let val = event.target.value;
+    this.filterArray = this.productDetails;
+    this.filterArray = this.filterArray.filter((item: any) => {
+      return (item.customerName.toLowerCase().indexOf(val.toLowerCase()) > -1);
+    });
   }
 
   get f() { return this.productDetailsForm.controls; }
@@ -139,7 +153,7 @@ export class Tab1Page implements OnInit {
   getAllCustomerDetails(data: any) {
     // this.userService.setProductId(data);
     console.log(this.userService, ' this.userService')
-    this.userService.Product = data
+        this.userService.Product = data
     console.log(this.userService.Product, ' this.userService.Product')
     this.apiService.CustomerForProductDetails(data).subscribe(data => {
       console.log(data, 'hello');
@@ -151,13 +165,14 @@ export class Tab1Page implements OnInit {
   }
 
   getFliterCustomer(data: any) {
-
-
   }
+
   updateProduct(updateProductDetailsForm: any) {
     this.apiService.updateProduct(this.updateForm.value).subscribe(data => {
+      console.log(data, 'updateForm')
       this.toast.success('Updated sucessfully');
       this.modal.dismiss();
+      this.getDetails();
     },
       (error: Response) => {
         if (error.status === 400) {
@@ -165,5 +180,18 @@ export class Tab1Page implements OnInit {
         }
       });
   }
+  statusForm(event) {
+    this.IsStatus = event.target.value;
+    this.productDetails = {
+      ...this.updateForm,
+      IsStatus: this.IsStatus
+    }
+    console.log(this.productDetails, 'this.productDetails')
+    console.log(this.IsStatus, 'update')
+    console.log(event, 'update')
+  }
+
+
 
 }
+

@@ -4,8 +4,13 @@ ion-card {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 .labelText {
-    padding-left: 0.5rem;
+    // padding-left: 0.8rem;
+    text-align: center;
     font-size: 1.2rem;
+}
+.labelFont{
+    padding-left: 1.2rem;
+    font-size: 1rem;
 }
 ion-input,
 ion-textarea,
@@ -46,10 +51,15 @@ h1 {
     color: #ffffff;
     font-weight: 800;
 }
-h2 {
+h3 {
     color: #001d6e;
     font-weight: 800;
     text-align: center;
+}
+h2 {
+    color: #001d6e;
+    font-weight: 800;
+    // text-align: center;
 }
 @media (min-width: 500px) {
     ion-modal {
@@ -61,4 +71,7 @@ h2 {
     color: #f03a3a;
     margin: 1.5rem;
     margin-bottom: 10rem !important;
+}
+.isDataNot {
+    text-align: center !important;
 }

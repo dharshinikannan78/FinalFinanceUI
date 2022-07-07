@@ -29,6 +29,8 @@ export class Tab3Page implements OnInit {
   isShowErrors: any;
   attachmentId: any;
   updateForm: FormGroup;
+  pName: any;
+  status: any;
 
 
   constructor(
@@ -66,6 +68,11 @@ export class Tab3Page implements OnInit {
       this._data = data;
       this.filterArray = this._data;
     });
+    this.apiService.getProductDetailsById(localStorage.getItem('productId')).subscribe(data => {
+      console.log(data, 'dfffffff')
+      this.pName = data[0].productName;
+      console.log(data, "iuhfjhedjkgsdjkhjk")
+    });
   }
   yourSearchFunction(event) {
     let val = event.target.value;
@@ -81,7 +88,7 @@ export class Tab3Page implements OnInit {
 
     });
   }
-  async presentAlertConfirm(data: any) {
+  async presentAlertConfirm(data: any, custName: any) {
 
     let payload = {
       'createdBy': this.currentUser,
@@ -92,7 +99,7 @@ export class Tab3Page implements OnInit {
 
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",
-      message: "Are you sure want to add customer?",
+      message: "Are you sure want to add " + custName + " to " + this.pName,
       buttons: [
         {
           text: "Cancel",
@@ -153,7 +160,8 @@ export class Tab3Page implements OnInit {
       aadharNumber: ['', Validators.required],
       referredBy: ['', Validators.required],
       attachmentId: [''],
-      attachmentName: ['']
+      attachmentName: [''],
+      // status: ['']
     });
   }
 
@@ -233,10 +241,20 @@ export class Tab3Page implements OnInit {
   }
   updateCustomer(update: any) {
     this.apiService.updateCustomer(this.updateForm.value).subscribe(data => {
+      console.log(data, 'hello')
       this.toast.success('Added Successfully');
       this.modal.dismiss();
       this.getCustomerDetail();
     });
   }
+  // statusForm(event) {
+  //   this.status = event.target.value;
+  //   this._data = {
+  //     ...this.updateForm,
+  //     Status: this.status
+  //   }
+  //   console.log(this.status, 'status')
+  // }
+
 
 }

@@ -61,8 +61,12 @@ export class ApiService {
     return this.http.post(url, params);
   }
 
+  // getProductDetails() {
+  //   const url = this.getProductApiUrl('Allproducts')
+  //   return this.http.get(url);
+  // }
   getProductDetails() {
-    const url = this.getProductApiUrl('Allproducts')
+    const url = this.getProductApiUrl('GetProductDetails')
     return this.http.get(url);
   }
 
@@ -140,8 +144,8 @@ export class ApiService {
     return this.http.get(url);
   }
   filterItem = (params: any): Observable<any> => {
-    const url = this.getPaymentApiUrl('FilteredItems');
-    return this.http.post(url, params);
+    const url = this.getPaymentApiUrl('PayHistory');
+    return this.http.get(url, params);
   }
   updateProduct = (params: any): Observable<any> => {
     const url = this.getProductApiUrl('UpdateProduct');
@@ -150,5 +154,9 @@ export class ApiService {
   updateCustomer = (params: any): Observable<any> => {
     const url = this.getCustomerApiUrl('UpdateCustomer');
     return this.http.put(url, params);
+  }
+  getProductDetailsById(params: any): Observable<any> {
+    const url = this.getProductApiUrl('ProductId?id=')
+    return this.http.get(url + params);
   }
 }

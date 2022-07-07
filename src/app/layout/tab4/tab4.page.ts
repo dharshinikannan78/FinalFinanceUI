@@ -35,12 +35,13 @@ export class Tab4Page {
   getPaymentHistory() {
     let pid = localStorage.getItem('productCustomerId');
     this.apiService.CustomerPayHistory(pid).subscribe(data => {
+      console.log(data, 'Geetha Pay')
       this._data = data;
       console.log(data, 'Geetha');
 
     });
   }
-  
+
   convert(data: any): string {
     return moment(data).format('D-MMM-YYYY');
   }

@@ -41,13 +41,13 @@
           <ion-item>
             <ion-icon slot="start" name="person"></ion-icon>
             <ion-label class="labelText">
-              {{item.collectedBy}}<br />
+              {{item.customerName}}<br />
             </ion-label>
           </ion-item>
           <ion-item>
             <ion-icon slot="start" name="albums-outline"></ion-icon>
             <ion-label class="labelText">
-              {{item.paymentType}}
+              {{item.productName}}<br />
             </ion-label>
           </ion-item>
           <ion-item>
@@ -60,6 +60,11 @@
             <ion-icon slot="start" name="calendar"></ion-icon>
             <ion-label class="labelText">
               {{ convert(item.paymentDate) }}
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label class="labelText">
+              Collected By {{item.collectedBy}}
             </ion-label>
           </ion-item>
         </ion-card>
